@@ -49,7 +49,7 @@ func doServerStreaming(c calcpb.PrimeServiceClient) {
 
 	req := &calcpb.PrimeManyTimesRequest{
 		PrimeInteger: &calcpb.PrimeInteger{
-			NumberOne: 120,
+			NumberOne: 120465,
 		},
 	}
 	resStream, err := c.PrimeManyTimes(context.Background(), req)

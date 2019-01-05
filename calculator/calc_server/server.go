@@ -8,7 +8,7 @@ import (
 	"log"
 	"net"
 	"strconv"
-	"time"
+	// "time"
 )
 
 type server struct{}
@@ -39,7 +39,7 @@ func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.P
 		} else {
 			k++
 		}
-		time.Sleep(10 * time.Millisecond)
+		// time.Sleep(10 * time.Millisecond)
 	}
 	return nil
 }
