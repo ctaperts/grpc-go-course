@@ -7,6 +7,8 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"strconv"
+	"time"
 )
 
 type server struct{}
@@ -22,6 +24,26 @@ func (*server) Integers(ctx context.Context, req *calcpb.SumRequest) (*calcpb.Su
 	return res, nil
 }
 
+func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.PrimeService_PrimeManyTimesServer) error {
+	fmt.Printf("PrimeManyTimes function was invoked with %v\n", req)
+	number := req.GetPrimeInteger().GetNumberOne()
+	k := 2
+	for n := int(number); n > 1; {
+		if n%k == 0 {
+			result := "Prime Number Decomposition: " + strconv.Itoa(k)
+			res := &calcpb.PrimeManyTimesResponse{
+				Result: result,
+			}
+			stream.Send(res)
+			n = n / k
+		} else {
+			k = k + 1
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	return nil
+}
+
 func main() {
 	fmt.Println("Hello world")
 
@@ -32,6 +54,7 @@ func main() {
 
 	s := grpc.NewServer()
 	calcpb.RegisterSumServiceServer(s, &server{})
+	calcpb.RegisterPrimeServiceServer(s, &server{})
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
