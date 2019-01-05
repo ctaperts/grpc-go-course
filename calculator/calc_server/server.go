@@ -37,7 +37,7 @@ func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.P
 			stream.Send(res)
 			n = n / k
 		} else {
-			k = k + 1
+			k++
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
