@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ctaperts/grpc-go-course/greet/greetpb"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net"
 	"strconv"
@@ -35,6 +36,29 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb
 		}
 		stream.Send(res)
 		time.Sleep(1000 * time.Millisecond)
+	}
+	return nil
+}
+
+// Client Streaming
+func (*server) LongGreet(stream greetpb.GreetService_LongGreetServer) error {
+	fmt.Printf("LongGreet function was invoked with stream request \n")
+	result := ""
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			// finished reading the client stream
+			stream.SendAndClose(&greetpb.LongGreetResponse{
+				Result: result,
+			})
+
+		}
+		if err != nil {
+			log.Fatalf("Error while reading the client stream: %v", err)
+		}
+
+		firstName := req.GetGreeting().GetFirstName()
+		result += "hello " + firstName + "! "
 	}
 	return nil
 }
