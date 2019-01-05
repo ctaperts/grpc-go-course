@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package calc;
+option go_package="calcpb";
+
+message Integers {
+    int32 number_one = 1;
+    int32 number_two = 2;
+}
+
+message SumRequest {
+    Integers integers = 1;
+}
+
+message SumResponse {
+    int32 result = 1;
+}
+
+service SumService{
+    // Unary
+    rpc Integers(SumRequest) returns (SumResponse) {};
+}
