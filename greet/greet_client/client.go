@@ -36,7 +36,10 @@ func main() {
 	// doBiDirectionalStreaming(c)
 
 	// unary call with deadline
-	doUnaryWithDeadline(c)
+	timeout := time.Second * 5
+	doUnaryWithDeadline(c, timeout)
+	timeout = time.Second * 1
+	doUnaryWithDeadline(c, timeout)
 
 }
 
@@ -174,7 +177,7 @@ func doBiDirectionalStreaming(c greetpb.GreetServiceClient) {
 	<-waitc
 }
 
-func doUnaryWithDeadline(c greetpb.GreetServiceClient) {
+func doUnaryWithDeadline(c greetpb.GreetServiceClient, timeout time.Duration) {
 	fmt.Println("Starting unary rpc with deadline...")
 	req := &greetpb.GreetWithDeadlineRequest{
 		Greeting: &greetpb.Greeting{
@@ -182,7 +185,7 @@ func doUnaryWithDeadline(c greetpb.GreetServiceClient) {
 			LastName:  "Taperts",
 		},
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	res, err := c.GreetWithDeadline(ctx, req)
