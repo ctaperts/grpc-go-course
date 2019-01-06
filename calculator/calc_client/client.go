@@ -128,34 +128,12 @@ func doBiDirectionalStreaming(c calcpb.CalcServiceClient) {
 		log.Fatalf("Error while creating stream: %v", err)
 	}
 
-	requests := []*calcpb.FindMaximumRequest{
-		&calcpb.FindMaximumRequest{
-			Integers: &calcpb.Integers{
-				NumberOne: 2,
-			},
-		},
-		&calcpb.FindMaximumRequest{
-			Integers: &calcpb.Integers{
-				NumberOne: 1,
-			},
-		},
-		&calcpb.FindMaximumRequest{
-			Integers: &calcpb.Integers{
-				NumberOne: 3,
-			},
-		},
-		&calcpb.FindMaximumRequest{
-			Integers: &calcpb.Integers{
-				NumberOne: 4,
-			},
-		},
-	}
-
+	numbers := []int32{4, 6, 8, 1, 3, 32}
 	waitc := make(chan struct{})
 	go func() {
-		for _, req := range requests {
+		for _, req := range numbers {
 			fmt.Printf("Sending integer: %v\n", req)
-			stream.Send(req)
+			stream.Send(&calcpb.FindMaximumRequest{Integers: &calcpb.Integers{NumberOne: req}})
 			time.Sleep(100 * time.Millisecond)
 		}
 		stream.CloseSend()
