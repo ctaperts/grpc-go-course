@@ -24,7 +24,7 @@ func (*server) Integers(ctx context.Context, req *calcpb.SumRequest) (*calcpb.Su
 	return res, nil
 }
 
-func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.PrimeService_PrimeManyTimesServer) error {
+func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.CalcService_PrimeManyTimesServer) error {
 	fmt.Printf("PrimeManyTimes function was invoked with %v\n", req)
 	number := req.GetPrimeInteger().GetNumberOne()
 	k := 2
@@ -53,8 +53,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	calcpb.RegisterSumServiceServer(s, &server{})
-	calcpb.RegisterPrimeServiceServer(s, &server{})
+	calcpb.RegisterCalcServiceServer(s, &server{})
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

@@ -16,11 +16,6 @@ message SumResponse {
     int32 result = 1;
 }
 
-service SumService{
-    // Unary
-    rpc Integers(SumRequest) returns (SumResponse) {};
-}
-
 message PrimeInteger {
     int32 number_one = 1;
 }
@@ -33,7 +28,9 @@ message PrimeManyTimesResponse {
     string result = 1;
 }
 
-service PrimeService {
+service CalcService {
+    // Unary call
+    rpc Integers(SumRequest) returns (SumResponse) {};
     // Server streaming
     rpc PrimeManyTimes(PrimeManyTimesRequest) returns (stream PrimeManyTimesResponse) {};
 }

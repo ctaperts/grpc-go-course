@@ -19,17 +19,17 @@ func main() {
 	}
 	defer conn.Close()
 
-	c := calcpb.NewSumServiceClient(conn)
+	c := calcpb.NewCalcServiceClient(conn)
 	// Unary RPC call
 	doUnary(c)
 
-	cs := calcpb.NewPrimeServiceClient(conn)
+	cs := calcpb.NewCalcServiceClient(conn)
 	// Server Streaming RPC call
 	doServerStreaming(cs)
 
 }
 
-func doUnary(c calcpb.SumServiceClient) {
+func doUnary(c calcpb.CalcServiceClient) {
 	fmt.Println("Starting unary rpc...")
 	req := &calcpb.SumRequest{
 		Integers: &calcpb.Integers{
@@ -44,7 +44,7 @@ func doUnary(c calcpb.SumServiceClient) {
 	log.Printf("Response from Integers: %v", res)
 }
 
-func doServerStreaming(c calcpb.PrimeServiceClient) {
+func doServerStreaming(c calcpb.CalcServiceClient) {
 	fmt.Println("Starting server streaming")
 
 	req := &calcpb.PrimeManyTimesRequest{
