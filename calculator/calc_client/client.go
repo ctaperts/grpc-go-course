@@ -182,10 +182,10 @@ func doSquareRootCall(c calcpb.CalcServiceClient, n int32) {
 				fmt.Println("Error: cannot square a negative error")
 			}
 		} else {
-			log.Fatalf("Error call SquareRoot: %v", err)
+			log.Fatalf("Error call SquareRoot: %v\n", err)
 		}
 
 		// error call
 	}
-	fmt.Printf("Result of square root of %v: %v", n, res.GetResult())
+	fmt.Printf("Result of square root of %v: %v\n", n, res.GetResult())
 }
