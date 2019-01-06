@@ -180,9 +180,11 @@ func doSquareRootCall(c calcpb.CalcServiceClient, n int32) {
 			fmt.Println(respErr.Code())
 			if respErr.Code() == codes.InvalidArgument {
 				fmt.Println("Error: cannot square a negative error")
+				return
 			}
 		} else {
 			log.Fatalf("Error call SquareRoot: %v\n", err)
+			return
 		}
 
 		// error call
