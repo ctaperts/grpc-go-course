@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/ctaperts/grpc-go-course/calculator/calcpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"time"
@@ -32,6 +34,9 @@ func main() {
 
 	// Bi-directional streaming RPC call
 	doBiDirectionalStreaming(c)
+
+	// Error codes
+	doSquareUnary(c)
 
 }
 
@@ -154,4 +159,33 @@ func doBiDirectionalStreaming(c calcpb.CalcServiceClient) {
 	}()
 
 	<-waitc
+}
+
+func doSquareUnary(c calcpb.CalcServiceClient) {
+	fmt.Println("Starting Square root unary directional streaming")
+	// correct call
+	var number int32 = 20
+	doSquareRootCall(c, number)
+	number = -10
+	doSquareRootCall(c, number)
+}
+
+func doSquareRootCall(c calcpb.CalcServiceClient, n int32) {
+	res, err := c.SquareRoot(context.Background(), &calcpb.SquareRootRequest{Number: n})
+	if err != nil {
+		respErr, ok := status.FromError(err)
+		if ok {
+			// actual error from grpc(user error)
+			fmt.Println(respErr.Message())
+			fmt.Println(respErr.Code())
+			if respErr.Code() == codes.InvalidArgument {
+				fmt.Println("Error: cannot square a negative error")
+			}
+		} else {
+			log.Fatalf("Error call SquareRoot: %v", err)
+		}
+
+		// error call
+	}
+	fmt.Printf("Result of square root of %v: %v", n, res.GetResult())
 }
