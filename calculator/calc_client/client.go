@@ -176,8 +176,8 @@ func doSquareRootCall(c calcpb.CalcServiceClient, n int32) {
 		respErr, ok := status.FromError(err)
 		if ok {
 			// actual error from grpc(user error)
-			fmt.Println(respErr.Message())
-			fmt.Println(respErr.Code())
+			fmt.Println("Error message from server", respErr.Message())
+			fmt.Println("Error code from server", respErr.Code())
 			if respErr.Code() == codes.InvalidArgument {
 				fmt.Println("Error: cannot square a negative error")
 				return
