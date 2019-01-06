@@ -34,6 +34,15 @@ message AverageRequest {
 message AverageResponse {
     float result = 1;
 }
+
+message FindMaximumRequest {
+    Integers integers = 1;
+}
+
+message FindMaximumResponse {
+    int32 result = 1;
+}
+
 service CalcService {
     // Unary call
     rpc Integers(SumRequest) returns (SumResponse) {};
@@ -41,4 +50,6 @@ service CalcService {
     rpc PrimeManyTimes(PrimeManyTimesRequest) returns (stream PrimeManyTimesResponse) {};
     // Client streaming
     rpc AverageLong(stream AverageRequest) returns (AverageResponse) {};
+    // Bi-directional streaming
+    rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse) {};
 }
