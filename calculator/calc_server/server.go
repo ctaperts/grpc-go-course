@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ctaperts/grpc-go-course/calculator/calcpb"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net"
 	"strconv"
@@ -40,6 +41,31 @@ func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.C
 			k++
 		}
 		// time.Sleep(10 * time.Millisecond)
+	}
+	return nil
+}
+
+func (*server) AverageLong(stream calcpb.CalcService_AverageLongServer) error {
+	fmt.Printf("AverageLong function was invoked with stream request \n")
+	var result int64
+	var amount_of_numbers int64
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			// finished reading the client stream
+			result = result / amount_of_numbers
+			return stream.SendAndClose(&calcpb.AverageResponse{
+				Result: result,
+			})
+
+		}
+		if err != nil {
+			log.Fatalf("Error while reading the client stream: %v", err)
+		}
+
+		number := req.GetIntegers().GetNumberOne()
+		amount_of_numbers++
+		result = +int64(number)
 	}
 	return nil
 }

@@ -28,9 +28,17 @@ message PrimeManyTimesResponse {
     string result = 1;
 }
 
+message AverageRequest {
+    Integers integers = 1;
+}
+message AverageResponse {
+    int64 result = 1;
+}
 service CalcService {
     // Unary call
     rpc Integers(SumRequest) returns (SumResponse) {};
     // Server streaming
     rpc PrimeManyTimes(PrimeManyTimesRequest) returns (stream PrimeManyTimesResponse) {};
+    // Client streaming
+    rpc AverageLong(stream AverageRequest) returns (AverageResponse) {};
 }
