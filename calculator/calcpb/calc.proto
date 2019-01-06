@@ -32,7 +32,7 @@ message AverageRequest {
     Integers integers = 1;
 }
 message AverageResponse {
-    int64 result = 1;
+    float result = 1;
 }
 service CalcService {
     // Unary call

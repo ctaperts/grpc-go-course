@@ -47,13 +47,14 @@ func (*server) PrimeManyTimes(req *calcpb.PrimeManyTimesRequest, stream calcpb.C
 
 func (*server) AverageLong(stream calcpb.CalcService_AverageLongServer) error {
 	fmt.Printf("AverageLong function was invoked with stream request \n")
-	var result int64
+	var total int64
+	var result float32
 	var amount_of_numbers int64
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
 			// finished reading the client stream
-			result = result / amount_of_numbers
+			result = float32(total) / float32(amount_of_numbers)
 			return stream.SendAndClose(&calcpb.AverageResponse{
 				Result: result,
 			})
@@ -65,7 +66,7 @@ func (*server) AverageLong(stream calcpb.CalcService_AverageLongServer) error {
 
 		number := req.GetIntegers().GetNumberOne()
 		amount_of_numbers++
-		result = +int64(number)
+		total = total + int64(number)
 	}
 	return nil
 }
