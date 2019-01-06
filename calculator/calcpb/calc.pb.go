@@ -566,6 +566,9 @@ type CalcServiceClient interface {
 	AverageLong(ctx context.Context, opts ...grpc.CallOption) (CalcService_AverageLongClient, error)
 	// Bi-directional streaming
 	FindMaximum(ctx context.Context, opts ...grpc.CallOption) (CalcService_FindMaximumClient, error)
+	// error handling
+	// will throw and exception if the sent number is negative
+	// error INCALID_ARGUMENT
 	SquareRoot(ctx context.Context, in *SquareRootRequest, opts ...grpc.CallOption) (*SquareRootResponse, error)
 }
 
@@ -702,6 +705,9 @@ type CalcServiceServer interface {
 	AverageLong(CalcService_AverageLongServer) error
 	// Bi-directional streaming
 	FindMaximum(CalcService_FindMaximumServer) error
+	// error handling
+	// will throw and exception if the sent number is negative
+	// error INCALID_ARGUMENT
 	SquareRoot(context.Context, *SquareRootRequest) (*SquareRootResponse, error)
 }
 
