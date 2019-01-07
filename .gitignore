@@ -2,3 +2,7 @@ greet_server
 greet_client
 calc_server
 calc_client
+*.crt
+*.key
+*.pem
+*.csr
