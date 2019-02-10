@@ -6,3 +6,4 @@ calc_client
 *.key
 *.pem
 *.csr
+*.pb.go
