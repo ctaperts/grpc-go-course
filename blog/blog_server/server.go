@@ -171,7 +171,7 @@ func (*server) DeleteBlog(ctx context.Context, req *blogpb.DeleteBlogRequest) (*
 	if res.DeletedCount == 0 {
 		return nil, status.Errorf(
 			codes.NotFound,
-			fmt.Sprintf("Cannot find document in MongoDb: %v\n", err),
+			fmt.Sprintf("Cannot find document in MongoDb: %v\n", oid),
 		)
 	}
 
