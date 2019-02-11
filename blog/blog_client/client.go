@@ -8,7 +8,7 @@ import (
 	// "google.golang.org/grpc/codes"
 	// "google.golang.org/grpc/credentials"
 	// "google.golang.org/grpc/status"
-	// "io"
+	"io"
 	"log"
 	// "time"
 )
@@ -80,10 +80,27 @@ func main() {
 		fmt.Printf("Blog was deleted: %v\n", deleteRes)
 	}
 
-	deleteRes, err = c.DeleteBlog(context.Background(), &blogpb.DeleteBlogRequest{BlogId: blogID})
+	// 	deleteRes, err = c.DeleteBlog(context.Background(), &blogpb.DeleteBlogRequest{BlogId: blogID})
+	// 	if err != nil {
+	// 		fmt.Printf("Error happened while deleting: %v\n", err)
+	// 	} else {
+	// 		fmt.Printf("Blog was deleted: %v\n", deleteRes)
+	// 	}
+	//
+	// listBlogs
+
+	stream, err := c.ListBlog(context.Background(), &blogpb.ListBlogRequest{})
 	if err != nil {
-		fmt.Printf("Error happened while deleting: %v\n", err)
-	} else {
-		fmt.Printf("Blog was deleted: %v\n", deleteRes)
+		log.Fatalf("error while calling ListBlog RPC: %v", err)
+	}
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Something happened: %v", err)
+		}
+		fmt.Println(res.GetBlog())
 	}
 }
