@@ -9,6 +9,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"os"
 	"os/signal"
@@ -245,6 +246,10 @@ func main() {
 
 	s := grpc.NewServer(opts...)
 	blogpb.RegisterBlogServiceServer(s, &server{})
+
+	// evans cli
+	// `evans -p 50051 -r`
+	reflection.Register(s)
 
 	go func() {
 		fmt.Println("Starting Server...")
